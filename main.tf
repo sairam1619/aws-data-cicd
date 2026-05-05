@@ -3,19 +3,40 @@ resource "aws_s3_bucket" "bucket" {
 }
 
 resource "aws_dynamodb_table" "lock_table" {
-  name         = "terraform-lock"
+  name         = "lock_table"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
+
+  # Primary Key
+  hash_key  = "UserID"
+  range_key = "OrderID"
 
   attribute {
-    name = "LockID"
-    type = "S"
-  }
-  attribute {
-    name = "Name"
+    name = "UserID"
     type = "S"
   }
 
+  attribute {
+    name = "OrderID"
+    type = "S"
+  }
+
+  attribute {
+    name = "Email"
+    type = "S"
+  }
+
+  attribute {
+    name = "CreatedAt"
+    type = "S"
+  }
+
+  # Global Secondary Index (uses remaining attributes)
+  global_secondary_index {
+    name            = "EmailIndex"
+    hash_key        = "Email"
+    range_key       = "CreatedAt"
+    projection_type = "ALL"
+  }
 }
 
 resource "aws_lambda_function" "lambda" {
@@ -24,5 +45,5 @@ resource "aws_lambda_function" "lambda" {
   handler       = "index.handler"
   runtime       = "python3.14"
   filename      = "lambda.zip"
-  time_out = "15 Minutes"
+  timeout       = 850
 }
