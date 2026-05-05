@@ -47,3 +47,10 @@ resource "aws_lambda_function" "lambda" {
   filename      = "lambda.zip"
   timeout       = 850
 }
+
+data "aws_caller_identity" "current" {}
+
+locals {
+  account_id = data.aws_caller_identity.current.account_id
+}
+
