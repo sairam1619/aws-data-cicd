@@ -13,4 +13,4 @@ terraform.tfvars
 # .terraform.lock.hcl
 
 # OS files
-.DS_Store
+.DS_Storeterraform.tfvars
