@@ -1,4 +1,16 @@
-"*.terraform*" 
-"*.tfstate*" 
-"terraform.tfvars" 
-".DS_Store" 
+# Terraform working directory
+.terraform/
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Terraform variables (often contain secrets)
+terraform.tfvars
+*.tfvars
+
+# Terraform lock file (OPTIONAL: usually you SHOULD commit this)
+# .terraform.lock.hcl
+
+# OS files
+.DS_Store
