@@ -5,6 +5,14 @@ on:
     branches:
       - main
 
+  # 👇 Manual trigger
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Choose action (apply/destroy)."
+        required: true
+        default: "apply"
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -16,7 +24,6 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
-      # ✅ FIXED
       - name: Format
         run: terraform fmt -check
 
@@ -36,5 +43,12 @@ jobs:
       - name: Plan
         run: terraform plan -input=false
 
+      # ✅ Apply only when selected
       - name: Apply
+        if: github.event.inputs.action == 'apply'
         run: terraform apply -auto-approve -input=false
+
+      # 🔥 Destroy only when selected
+      - name: Destroy
+        if: github.event.inputs.action == 'destroy'
+        run: terraform destroy -auto-approve -input=false
