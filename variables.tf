@@ -3,5 +3,5 @@ variable "region" {
 }
 
 variable "bucket_name" {
-  default = "my-terraform-bucket-123"
+  default = "sairam-terraform-bucket-2026-xyz-619"
 }
